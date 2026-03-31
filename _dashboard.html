@@ -1,0 +1,74 @@
+<!-- Tela Principal: /screens/_dashboard.html -->
+<div id="main-app-layout" class="screen view-active">
+    <header class="header-large">
+        <div class="logo">Leia Fácil!</div>
+
+        <!-- Toggle IA movido para o Header (DESATIVADO na tela principal) -->
+        <div class="ai-toggle-container ai-toggle-disabled" style="display: flex; align-items: center;">
+            <div class="ai-toggle-row" title="Assistente IA (Desativado)">
+                <img src="icones/IA.png" class="ai-icon" alt="IA" onerror="this.src='icones/icone_configuracoes.png'">
+                <label class="switch">
+                    <input type="checkbox" disabled>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout-wrapper">
+        <!-- Conteúdo principal com os 5 botões -->
+        <div id="dashboard-screen" class="inner-screen">
+            <div class="dashboard-container">
+                
+                <!-- Área Central de Leitura restaurada -->
+                <div class="main-reading-area">
+                    <div class="empty-doc-placeholder">
+                        <img src="icones/icone_adicionar_doc.png" alt="" style="width: 60px; opacity: 0.5; margin-bottom: 10px;" onerror="this.style.display='none'">
+                        <p>Nenhum documento aberto</p>
+                        <p style="font-size: 1rem; font-weight: 400;">Escaneie ou importe um arquivo para começar</p>
+                    </div>
+                </div>
+                
+                <!-- Barra Inferior com Ações Principais -->
+                <div class="main-actions-grid">
+                    
+                    <!-- 1. Escanear -->
+                    <button id="btn-scan" class="btn-main-action" title="Escanear">
+                        <div class="btn-main-icon"><img src="icones/icone_escanear.png" alt=""></div>
+                    </button>
+
+                    <!-- 2. Importar -->
+                    <button id="btn-import" class="btn-main-action" title="Importar">
+                        <div class="btn-main-icon"><img src="icones/icone_importar.png" alt=""></div>
+                    </button>
+
+                    <!-- 3. Enviar -->
+                    <button id="btn-send" class="btn-main-action" title="Compartilhar">
+                        <div class="btn-main-icon"><img src="icones/icone_compartilhar.png" alt="Compartilhar"></div>
+                    </button>
+
+                    <!-- 4. Configurações -->
+                    <button id="btn-settings" class="btn-main-action" title="Configurações">
+                        <div class="btn-main-icon"><img src="icones/icone_configuracoes.png" alt=""></div>
+                    </button>
+
+                    <!-- 5. Voltar (para a tela de perfis) -->
+                    <button id="btn-back-to-home" class="btn-main-action" title="Voltar">
+                        <div class="btn-main-icon"><img src="icones/icone_voltar.png" alt=""></div>
+                    </button>
+
+                    <!-- Botões de Usuário e Fechar - Footer Direita -->
+                    <div class="header-right" id="user-close-container" style="margin-left: auto;">
+                        <button class="btn-icon" id="btn-user-header" title="Usuários">
+                            <img src="icones/icone_perfil_mais.png" alt="Usuários">
+                            <span>Usuários</span>
+                        </button>
+                        <button class="btn-icon btn-close-app" title="Fechar Projeto">
+                            <img src="icones/icone_sair.png" alt="Fechar" onerror="this.style.display='none'">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

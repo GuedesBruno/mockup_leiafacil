@@ -1,0 +1,1254 @@
+/* style.css - Leia Fácil Mockup - Final */
+
+/* =============================================
+   == 1. ESTILOS GLOBAIS E VARIÁVEIS
+   ============================================= */
+:root {
+    --bg-primary: #F5F5F5;
+    --text-primary: #1A1A1A;
+    --btn-bg: #E0E0E0;
+    --btn-border: #999999;
+    --btn-hover: #D0D0D0;
+    --focus-ring: #2196F3;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Valores padrão do documento -- sobrescritos pelo perfil ativo */
+    --doc-bg: #ffffff;
+    --doc-text: #000000;
+    --doc-font: Arial, sans-serif;
+    --doc-size: 1.2rem;
+    --doc-line-height: 1.6;
+}
+
+/* Perfil Padrão */
+body.profile-padrao {
+    --doc-bg: #ffffff;
+    --doc-text: #000000;
+    --doc-font: Arial, sans-serif;
+}
+
+/* Perfil TDAH: Foco, menos distrações */
+body.profile-tdah {
+    --doc-font: 'Verdana', sans-serif;
+    --doc-size: 1.3rem;
+    --doc-line-height: 1.8;
+}
+
+/* Perfil TEA: Cores calmas, fontes previsíveis */
+body.profile-tea {
+    --doc-bg: #F0F8FF; /* AliceBlue */
+    --doc-text: #191970; /* MidnightBlue */
+    --doc-font: 'Arial', sans-serif;
+}
+
+/* Perfil Dislexia: Fonte específica e mais espaçamento */
+body.profile-dislexia {
+    /* Idealmente, usar uma fonte como OpenDyslexic aqui via @font-face */
+    --doc-font: 'Comic Sans MS', 'Chalkboard SE', 'cursive';
+    --doc-size: 1.4rem;
+    --doc-line-height: 2.0;
+    --doc-bg: #FAF0E6; /* Linen */
+}
+
+/* Perfil Baixa Visão: Alto contraste */
+body.profile-baixa_visao {
+    --doc-font: 'Arial', sans-serif;
+    --doc-size: 2.0rem;
+    --doc-bg: #000000;
+    --doc-text: #FFFF00;
+}
+
+/* Perfil Cegueira: Oculta detalhes visuais desnecessários (opcional) */
+body.profile-cegueira {
+    --doc-font: 'Arial', sans-serif;
+    --doc-bg: #000000;
+    --doc-text: #FFFFFF;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Accessible Thick Scrollbar */
+::-webkit-scrollbar { width: 20px; height: 20px; }
+::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background-color: #555; border-radius: 10px; border: 4px solid #e0e0e0; }
+::-webkit-scrollbar-thumb:hover { background-color: #333; }
+
+button {
+    cursor: pointer;
+    border: 2px solid var(--btn-border);
+    background-color: var(--btn-bg);
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: background 0.2s;
+}
+button:hover { background-color: var(--btn-hover); }
+button:focus { outline: 3px solid var(--focus-ring); }
+
+
+/* =============================================
+   == 2. ESTRUTURA E TRANSIÇÃO DE TELAS
+   ============================================= */
+#app-root {
+    height: 100%;
+    width: 100%;
+    transition: opacity 0.2s ease-in-out;
+}
+#app-root.fade-out {
+    opacity: 0;
+}
+
+.screen { 
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Layout principal que contém header e conteúdo */
+#main-app-layout {
+    /* Este é um container para telas internas */
+}
+
+header {
+    height: 70px;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    border-bottom: 2px solid #ccc;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    margin: 0;
+}
+
+/* Header expandido para a tela de Documento */
+header.header-large {
+    flex-direction: row;
+    align-items: center;
+    padding: 30px 40px;
+    min-height: 130px; /* Aumenta a altura para caber confortavelmente o ícone de IA */
+    position: relative;
+}
+
+/* Layout do Header no modo OCR (texto) */
+header.header-large .ai-toggle-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+header.header-large .doc-tools {
+    margin-left: auto; /* Empurra as ferramentas para perto da direita */
+}
+
+.logo { font-size: 1.5rem; font-weight: 900; color: #0056b3; }
+
+.header-right { display: flex; align-items: center; gap: 15px; }
+
+.btn-icon {
+    background: #f0f0f0; 
+    border-radius: 32px; 
+    font-weight: bold;
+    padding: 10px 21px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid #ddd;
+}
+.btn-icon img { height: 31px; width: auto; }
+
+.btn-close-app {
+    background-color: #ffe6e6;
+    border-color: #ffcccc;
+    color: #cc0000;
+    padding: 10px;
+    width: 55px;
+    height: 55px;
+    justify-content: center;
+}
+
+.btn-close-app:hover {
+    background-color: #ffcccc;
+}
+
+.main-layout-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.inner-screen {
+    flex: 1;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* =============================================
+   == COMPONENTES REUTILIZÁVEIS
+   ============================================= */
+
+/* Separador Vertical */
+.vertical-divider {
+    width: 3px;
+    background-color: #ddd;
+    border-radius: 2px;
+    margin: 0 25px; /* Separação Maior */
+    align-self: stretch;
+}
+
+/* Dropdown Usuários (Home) */
+.user-list-dropdown {
+    position: fixed;
+    /* top e left são controlados pelo JS para ficar logo abaixo do botão */
+    transform: translateX(-50%);
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    display: none;
+    flex-direction: column;
+    min-width: 280px;
+    z-index: 2000;
+    margin-top: 0;
+    overflow: hidden;
+}
+.user-list-dropdown.show { display: flex; }
+.user-list-item { padding: 14px 20px; border-bottom: 1px solid #eee; cursor: pointer; text-align: center; font-weight: 700; font-size: 1.1rem; }
+.user-list-item:hover { background: #f0f7ff; color: #007bff; }
+.user-list-item:last-child { border-bottom: none; }
+
+/* Assistente IA */
+.ai-icon {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+}
+.ai-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.ai-toggle-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Toggle Switch UI */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc; transition: .4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute; content: "";
+  height: 18px; width: 18px;
+  left: 4px; bottom: 4px;
+  background-color: white; transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider { background-color: #007bff; }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* Modal e Wizard */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+    z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-content {
+    background: white; width: 500px; max-width: 90%; padding: 30px; border-radius: 12px;
+    position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;
+}
+.modal-content.wizard-container { width: 700px; }
+.btn-close { position: absolute; top: 15px; right: 15px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;}
+
+/* Utilitários de Formulário e UI Config */
+.row-align { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
+.flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.gap-20 { gap: 20px; }
+.mt-20 { margin-top: 20px; }
+.disabled-section { opacity: 0.4; pointer-events: none; transition: opacity 0.3s; }
+.preview-box {
+    background: #f0f8ff; border: 2px dashed #007bff; padding: 20px; border-radius: 8px;
+    text-align: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 20px; color: #333;
+}
+.contrast-box {
+    width: 50px; height: 50px; border: 2px solid #ccc; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;
+    transition: all 0.3s ease; user-select: none;
+}
+.contrast-box.active { border-color: #007bff; transform: scale(1.15); box-shadow: 0 4px 10px rgba(0,123,255,0.5); border-width: 3px; }
+.contrast-box:hover { transform: scale(1.05); }
+.c-1 { background: white; color: black; border: 2px solid #333; }
+.c-2 { background: black; color: yellow; }
+.c-3 { background: yellow; color: black; }
+.c-4 { background: blue; color: white; }
+.c-5 { background: black; color: white; }
+
+/* Estrutura Interna de Settings */
+.settings-main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.sidebar-menu-items {
+    padding: 20px 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+.sidebar-footer-actions {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    background: #fdfdfd;
+}
+.sidebar-footer-actions .btn-main-action {
+    flex: none; width: 75px; background: transparent; border: none; padding: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s ease;
+}
+.sidebar-footer-actions .btn-main-action:hover {
+    transform: translateY(-5px);
+}
+.sidebar-footer-actions .btn-main-icon {
+    width: 100%; aspect-ratio: 1 / 1; background: #ffffff; border: 3px solid #ddd;
+    border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center; transition: all 0.25s ease;
+}
+.sidebar-footer-actions .btn-main-icon img {
+    width: 50%; height: 50%; object-fit: contain;
+}
+.sidebar-footer-actions .btn-main-action:hover .btn-main-icon {
+    border-color: #007bff; background: #eef4ff; box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+}
+.sidebar-footer-actions .btn-main-label {
+    font-size: 0.85rem; font-weight: 800; color: #111; text-align: center; text-transform: uppercase;
+}
+
+/* Estilos para Modais de Ação (Salvar, Imprimir, etc) */
+.action-modal-content {
+    text-align: center;
+}
+.action-modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+.action-modal-options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.action-modal-options .btn-main-action {
+    max-width: 170px;
+    flex: 1;
+}
+
+.lista-perfis-item {
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.lista-perfis-item:hover {
+    background: #f0f7ff;
+    border-color: #007bff;
+}
+
+/* =============================================
+   == 3. TELAS ESPECÍFICAS
+   ============================================= */
+
+/* == TELA: INICIAL (_home.html) == */
+#home-screen {
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.home-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+#home-screen .welcome-container {
+    text-align: center;
+    padding: 20px 40px 10px;
+    margin-bottom: 10px;
+}
+
+#home-screen .welcome-container h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #0056b3;
+    margin: 0 0 10px;
+}
+
+#home-screen .welcome-container p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+#home-screen .home-unified-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 24px;
+    flex-wrap: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+#home-screen .btn-preset {
+    flex: 1 1 0;
+    min-width: 110px;
+    max-width: 180px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#home-screen .btn-preset:hover {
+    transform: translateY(-6px);
+}
+
+#home-screen .btn-preset .icon {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #ffffff;
+    border: 3px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+#home-screen .btn-preset .icon img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+#home-screen .btn-preset-label {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111;
+    white-space: nowrap;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
+}
+
+#home-screen .user-profile-wrapper {
+    flex: 1 1 0;
+    min-width: 110px;
+    max-width: 180px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#home-screen .user-profile-wrapper .btn-preset {
+    flex: none;
+    width: 100%;
+    min-width: auto;
+    max-width: none;
+}
+
+#home-screen .icon.btn-user-dashed {
+    border-style: dashed !important;
+    border-width: 3px !important;
+    border-color: #999 !important;
+}
+
+#home-screen .btn-preset:hover .icon {
+    border-color: #007bff;
+    background: #eef4ff;
+    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+}
+
+#home-screen .btn-preset.active-profile .icon {
+    border-color: #007bff;
+    background: #ddeeff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+#home-screen .home-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#home-screen .btn-start-now {
+    font-size: 2rem;
+    font-weight: 900;
+    padding: 20px 80px;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    background-color: #111111;
+    color: #ffffff;
+    border: 4px solid #FFD700;
+}
+
+#home-screen .btn-start-now:hover {
+    background-color: #333 !important;
+    transform: scale(1.04);
+}
+
+#home-screen .btn-close-app-bottom {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    background: #FF5252;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#home-screen .btn-close-app-bottom:hover {
+    background: #FF1744;
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+#home-screen .btn-close-app-bottom img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+
+/* == TELA: PRINCIPAL (_dashboard.html) == */
+#dashboard-screen .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: 100%;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+#dashboard-screen .ai-toggle-container {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#dashboard-screen .main-reading-area {
+    flex: 1; 
+    background: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+#dashboard-screen .main-actions-grid, #document-screen .main-actions-grid {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    flex-wrap: nowrap;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#dashboard-screen .btn-main-action, #document-screen .btn-main-action {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease;
+    max-width: 110px;
+}
+
+#dashboard-screen .btn-main-action:hover, #document-screen .btn-main-action:hover {
+    transform: translateY(-8px);
+}
+
+#dashboard-screen .btn-main-icon, #document-screen .btn-main-icon {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #ffffff;
+    border: 3px solid #ddd;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+#dashboard-screen .btn-main-icon img, #document-screen .btn-main-icon img {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+}
+
+#dashboard-screen .btn-main-action:hover .btn-main-icon, #document-screen .btn-main-action:hover .btn-main-icon {
+    border-color: #007bff;
+    background: #eef4ff;
+    box-shadow: 0 8px 20px rgba(0,123,255,0.2);
+}
+
+#dashboard-screen .btn-main-label, #document-screen .btn-main-label {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #111;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Isola o container de usuários à direita para não empurrar os botões do centro (Modo OCR) */
+#document-screen:not(.image-view-mode) #user-close-container {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 0 !important;
+}
+
+/* Mesma estratégia para Dashboard: posiciona usuários/fechar à direita sem interferir na centralização dos botões */
+#dashboard-screen #user-close-container {
+    position: absolute;
+    right: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 0 !important;
+}
+
+/* == TELA: LEITURA (_document.html) == */
+#document-screen {
+    display: flex; /* Mantém o flex para o modo imagem funcionar */
+    flex-direction: column; /* Padrão para modo texto */
+}
+
+#document-screen .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+    /* Este header interno agora está vazio, mas pode ser usado no futuro */
+}
+
+/* Estilos para as ferramentas que foram para o Header */
+header.header-large .doc-tools { display: flex; gap: 6px; align-items: center; }
+
+header.header-large .doc-tools .space-after {
+    margin-right: 12px; /* Adiciona um espaço maior após este botão */
+}
+
+header.header-large .btn-tool { 
+    width: 60px; height: 60px; padding: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: white; border: 2px solid #ddd; border-radius: 8px;
+    transition: all 0.2s;
+}
+header.header-large .btn-tool:hover {
+    border-color: #007bff; background: #f0f7ff; transform: translateY(-2px);
+}
+header.header-large .btn-tool img { height: 80%; width: auto; object-fit: contain; }
+
+.doc-content-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    overflow: hidden; /* Clips the masks */
+}
+
+#document-screen .doc-content {
+    background: var(--doc-bg);
+    color: var(--doc-text);
+    font-family: var(--doc-font);
+    font-size: var(--doc-size);
+    line-height: var(--doc-line-height);
+    padding: 30px;
+    border-radius: 8px;
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+/* Temas de Contraste para o Carrossel */
+.doc-content.contrast-1 { background: #000000 !important; color: #FFFF00 !important; }
+.doc-content.contrast-2 { background: #FFFF00 !important; color: #000000 !important; }
+.doc-content.contrast-3 { background: #000080 !important; color: #FFFFFF !important; }
+.doc-content.contrast-4 { background: #000000 !important; color: #FFFFFF !important; }
+/* O contraste 0 (padrão) é aplicado pelo perfil do body */
+
+.contrast-img-invert { filter: invert(1) !important; }
+.contrast-img-grayscale { filter: grayscale(1) !important; }
+
+#document-screen #image-view-container img {
+    transition: filter 0.3s ease;
+}
+
+#document-screen #linha-guia {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--doc-text); /* Usa a cor do texto do perfil */
+    opacity: 0.7;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: top 0.3s ease; /* Animação suave ao mover a linha */
+}
+
+#document-screen .doc-content.leitura-em-linha-active ~ #linha-guia {
+    top: calc(50% + 40px); /* Empurra a linha guia para baixo do texto centralizado */
+}
+
+#document-screen .mascara {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: black;
+    pointer-events: none;
+}
+#document-screen #mascara-top {
+    top: 0;
+    height: 40%;
+}
+#document-screen #mascara-bottom {
+    bottom: 0;
+    height: 40%;
+}
+
+.audio-tool-wrapper {
+    position: relative; /* Anchor for the slider */
+}
+
+.volume-slider-container {
+    position: absolute;
+    top: calc(100% + 5px); /* Position below the button */
+    left: 0;
+    width: 100%; /* Same width as the button */
+    background: #f8f9fa;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 20;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.volume-slider-container .volume-label {
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #333;
+    line-height: 1;
+}
+
+.volume-slider-container input[type="range"][orient="vertical"] {
+    writing-mode: bt-lr; /* bottom to top */
+    -webkit-appearance: slider-vertical;
+    width: 12px;
+    height: 120px;
+    padding: 0 5px;
+}
+
+.btn-tool.active-tool {
+    border-color: #007bff;
+    background: #eef4ff;
+}
+
+#document-screen .doc-content.leitura-em-linha-active {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    overflow-x: auto;
+    background: black;
+    color: white;
+}
+#document-screen .doc-content.leitura-em-linha-active p {
+    display: inline-block;
+    margin: 0 40px;
+}
+#document-screen .doc-content.leitura-em-linha-active .marcador-paragrafo {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: yellow;
+    border-radius: 50%;
+    margin: 0 15px;
+}
+
+#document-screen #image-view-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.a4-page-mock {
+    width: 100%;
+    max-width: 60vh;
+    aspect-ratio: 1 / 1.414; /* Proporção exata de folha A4 */
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.a4-page-mock img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modo de Visualização de Imagem */
+
+#document-screen .doc-sidebar {
+    display: none; /* Escondido por padrão */
+}
+
+#document-screen.image-view-mode .doc-sidebar {
+    position: relative;
+    background: #f8f9fa;
+    transition: width 0.3s ease;
+    display: block; /* Garante que a sidebar apareça no modo imagem */
+    z-index: 10;
+}
+#document-screen.image-view-mode .doc-sidebar.collapsed {
+    width: 30px !important;
+}
+#document-screen.image-view-mode .doc-sidebar.collapsed .sidebar-inner-content {
+    display: none;
+}
+
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #007bff;
+    color: white;
+    border: 2px solid #0056b3;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 100;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+.doc-sidebar-left .sidebar-toggle-btn { right: -18px; }
+.doc-sidebar-right .sidebar-toggle-btn { left: -18px; }
+
+.sidebar-inner-content {
+    padding: 30px 15px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#document-screen.image-view-mode .doc-tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 15px;
+}
+
+/* Posicionamento dos botões no grid do modo imagem */
+#document-screen.image-view-mode #btn-contraste {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#document-screen.image-view-mode .audio-tool-wrapper {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#document-screen.image-view-mode #btn-linha-guia {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#document-screen.image-view-mode #btn-zoom-out {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#document-screen.image-view-mode #btn-mascara {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#document-screen.image-view-mode #btn-zoom-in {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+/* Layout da Sidebar Esquerda no modo imagem */
+.doc-sidebar-left .sidebar-inner-content {
+    justify-content: space-between; /* Título no topo, grid de ações embaixo */
+}
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Layout da Sidebar Direita no modo imagem */
+.doc-sidebar-right .sidebar-inner-content {
+    justify-content: flex-start; /* Começa tudo do topo */
+    gap: 20px;
+}
+.doc-sidebar-right #user-close-container {
+    margin-left: 0 !important; /* Reseta a margem para o sidebar */
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.doc-sidebar-right .ai-toggle-container {
+    position: static;
+    transform: none;
+    margin: auto; /* Centraliza a IA no sidebar perfeitamente (vertical e horizontal) */
+}
+.doc-sidebar-right .doc-tools {
+    margin-top: 0; /* Remove empurrão antigo para que o "margin: auto" da IA dívida o espaço */
+}
+
+#document-screen.image-view-mode .doc-tools .space-after {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+#document-screen.image-view-mode .main-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+#document-screen.image-view-mode #btn-leitura-linha {
+    display: none;
+}
+
+/* ========================================================
+   == COLOR PICKER OVERLAY - LEITURA E DESTAQUE
+   ======================================================== */
+
+.color-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(248, 249, 250, 0.98);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease;
+}
+
+.color-picker-overlay.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.color-picker-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    padding-top: 50px;
+}
+
+.color-picker-preview-box {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+    border: 3px dashed #007bff;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    min-width: 500px;
+    max-width: 700px;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.color-picker-preview-box span {
+    font-weight: 900;
+    padding: 0 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.color-picker-instruction {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.color-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    justify-items: center;
+}
+
+.color-square {
+    aspect-ratio: 1;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.color-square:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-color: #333;
+}
+
+.color-square.selected {
+    border: 4px solid #007bff;
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+    transform: scale(1.12);
+}
+
+.color-square.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.color-square.disabled::after {
+    content: "✗";
+    font-size: 2.5rem;
+    color: #999;
+    font-weight: bold;
+} /* Oculta o botão no modo imagem */
+
+
+#document-screen.image-view-mode .doc-sidebar-left {
+    border-right: 1px solid #ddd;
+    width: 230px; /* Alargado para caber 2 colunas */
+}
+
+#document-screen.image-view-mode .doc-sidebar-right {
+    border-left: 1px solid #ddd;
+    width: 230px; /* Alargado para caber 2 colunas */
+}
+
+#document-screen.image-view-mode .btn-tool {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 37px;
+}
+#document-screen.image-view-mode .btn-tool img {
+    width: 97%;
+    height: 97%;
+}
+
+/* Ajusta o wrapper principal para o modo de imagem */
+#document-screen.image-view-mode {
+    flex-direction: row;
+    padding: 0;
+    gap: 0;
+}
+
+/* Corrige o tamanho dos ícones em TODOS os modais de ação */
+.action-modal-options .btn-main-icon img {
+    width: 70%;
+    height: 70%;
+}
+
+/* == TELA: CONFIGURAÇÕES (_settings.html) == */
+#settings-screen {
+    padding: 15px 30px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#settings-screen .settings-unified-container {
+    display: flex;
+    height: 100%;
+    background: #f8f9fa;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+#settings-screen .settings-sidebar {
+    width: 250px;
+    background: white;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2001;
+}
+
+#settings-screen .settings-sidebar-item {
+    padding: 15px 25px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #444;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+#settings-screen .settings-sidebar-item:hover { background: #f0f7ff; color: #007bff; }
+#settings-screen .settings-sidebar-item.active {
+    background: #e7f3ff; color: #007bff; border-left-color: #007bff;
+}
+
+#settings-screen .settings-content {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+#settings-screen .settings-block {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#settings-screen .settings-block-header {
+    padding: 20px 25px;
+    background: #fafafa;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#settings-screen .settings-block-content {
+    padding: 20px 25px;
+}
+
+#settings-screen .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+#settings-screen .form-group label { font-weight: bold; color: #444; }
+#settings-screen .form-group select, #settings-screen .form-group input[type="number"], #settings-screen .form-group input[type="text"] {
+    padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem; width: 100%; box-sizing: border-box;
+}
+#settings-screen .checkbox-group { display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; }

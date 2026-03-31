@@ -1,0 +1,143 @@
+<!-- Tela de Leitura: /screens/_document.html -->
+<div id="main-app-layout" class="screen view-active">
+    <header class="header-large">
+        <div class="logo">Documento Aberto</div> <!-- Será atualizado pelo JS -->
+
+        <!-- Toggle IA e Ferramentas movidos para o Header -->
+        <div class="ai-toggle-container" style="display: flex; align-items: center;">
+            <div class="ai-toggle-row" title="Assistente IA" style="padding: 0;">
+                <img src="icones/IA.png" class="ai-icon" alt="IA" onerror="this.src='icones/icone_configuracoes.png'">
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="doc-tools">
+            <button id="btn-leitura-linha" class="btn-tool space-after" title="Leitura em Linha"><img src="icones/icone_leitura_linha.png" alt="Leitura em Linha" onerror="this.src='icones/icone_configuracoes.png'"></button> <!-- Este botão é oculto no modo imagem via CSS -->
+            <button id="btn-contraste" class="btn-tool" title="Ajustar contraste"><img src="icones/icone_contraste.png" alt="Contraste"></button>
+            <button id="btn-linha-guia" class="btn-tool" title="Linha guia"><img src="icones/icone_guia.png" alt="Linha guia" onerror="this.src='icones/icone_configuracoes.png'"></button>
+            <button id="btn-mascara" class="btn-tool space-after" title="Máscara de Leitura"><img src="icones/icone_mascara.png" alt="Máscara de Leitura" onerror="this.src='icones/icone_configuracoes.png'"></button>
+            <div class="audio-tool-wrapper">
+                <button id="btn-audio" class="btn-tool space-after" title="Ler em voz alta"><img src="icones/icone_audio_ler.png" alt="Ler"></button>
+                    <div id="volume-slider-container" class="volume-slider-container hidden">
+                        <span class="volume-label">+</span>
+                        <input type="range" id="volume-slider" min="0" max="100" value="80" orient="vertical">
+                        <span class="volume-label">-</span>
+                    </div>
+            </div>
+            <button id="btn-zoom-out" class="btn-tool" title="Diminuir fonte"><img src="icones/icone_minus.png" alt="Menos"></button>
+            <button id="btn-zoom-in" class="btn-tool" title="Aumentar fonte"><img src="icones/icone_plus.png" alt="Mais"></button>
+        </div>
+    </header>
+
+    <div class="main-layout-wrapper">
+        <div id="document-screen" class="inner-screen">
+            
+            <!-- Sidebar Esquerda para Modo Imagem -->
+            <div class="doc-sidebar doc-sidebar-left" id="sidebar-left">
+                <button class="sidebar-toggle-btn" id="btn-toggle-left" title="Recolher/Expandir">◀</button>
+                <div class="sidebar-inner-content" id="sidebar-content-left"></div>
+            </div>
+
+            <div id="doc-center-wrapper" style="flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 10px 30px; overflow: hidden;">
+                <div class="doc-header">
+                <!-- Ferramentas movidas para o Header global -->
+            </div>
+            <div class="doc-content-wrapper">
+                <div id="doc-content-text" class="doc-content">
+                    <!-- O conteúdo do texto será injetado aqui -->
+                </div>
+                <div id="image-view-container" class="hidden">
+                    <div class="a4-page-mock">
+                        <img src="icones/icone_configuracoes.png" alt="Imagem do documento escaneado" id="img-a4-preview">
+                    </div>
+                </div>
+                <div id="linha-guia" class="hidden"></div>
+                <div id="mascara-top" class="mascara hidden"></div>
+                <div id="mascara-bottom" class="mascara hidden"></div>
+            </div>
+
+            <!-- Barra Inferior de Ações da Tela de Leitura -->
+            <div class="main-actions-grid" style="padding-top: 10px;">
+                <button class="btn-main-action" title="Adicionar Nova Página">
+                    <div class="btn-main-icon"><img src="icones/icone_adicionar_doc.png" alt="Adicionar Nova Página" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                </button>
+                <button class="btn-main-action" title="Escanear">
+                    <div class="btn-main-icon"><img src="icones/icone_escanear.png" alt="Escanear"></div>
+                </button>
+                <button id="btn-modo-visualizacao" class="btn-main-action" title="Modo de Visualização">
+                    <div class="btn-main-icon"><img src="icones/icone_modo_visualizacao.png" alt="Modo de Visualização"></div>
+                </button>
+                <button id="btn-imprimir" class="btn-main-action" title="Imprimir">
+                    <div class="btn-main-icon"><img src="icones/icone_imprimir.png" alt="Imprimir" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                </button>
+                <button id="btn-salvar" class="btn-main-action" title="Salvar">
+                    <div class="btn-main-icon"><img src="icones/icone_salvar.png" alt="Salvar" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                </button>
+                <button id="btn-compartilhar" class="btn-main-action" title="Compartilhar">
+                    <div class="btn-main-icon"><img src="icones/icone_compartilhar.png" alt="Compartilhar" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                </button>
+                <button class="btn-main-action" id="btn-doc-settings" title="Configurações">
+                    <div class="btn-main-icon"><img src="icones/icone_configuracoes.png" alt="Configurações"></div>
+                </button>
+                <button class="btn-main-action" id="btn-doc-voltar" title="Voltar">
+                    <div class="btn-main-icon"><img src="icones/icone_voltar.png" alt="Voltar"></div>
+                </button>
+                
+                <div class="header-right" id="user-close-container" style="margin-left: auto;">
+                    <button class="btn-icon" id="btn-user-header" title="Usuários">
+                        <img src="icones/icone_perfil_mais.png" alt="Usuários">
+                        <span>Usuários</span>
+                    </button>
+                    <button class="btn-icon btn-close-app" title="Fechar Projeto">
+                        <img src="icones/icone_sair.png" alt="Fechar" onerror="this.style.display='none'">
+                    </button>
+                </div>
+            </div>
+            </div> <!-- Fecha o doc-center-wrapper -->
+
+            <!-- Sidebar Direita para Modo Imagem -->
+            <div class="doc-sidebar doc-sidebar-right" id="sidebar-right">
+                <button class="sidebar-toggle-btn" id="btn-toggle-right" title="Recolher/Expandir">▶</button>
+                <div class="sidebar-inner-content" id="sidebar-content-right"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAIS DE AÇÃO -->
+<div id="modal-imprimir" class="modal-overlay">
+    <div class="modal-content action-modal-content">
+        <button class="btn-close">×</button>
+        <h3>Imprimir Documento</h3>
+        <div class="action-modal-options">
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_imprimir.png" onerror="this.src='icones/icone_configuracoes.png'"></div><span class="btn-main-label">Tinta</span></button>
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_imprimir_braille.png" onerror="this.src='icones/icone_configuracoes.png'"></div><span class="btn-main-label">Braille</span></button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-salvar" class="modal-overlay">
+    <div class="modal-content action-modal-content">
+        <button class="btn-close">×</button>
+        <h3>Salvar Como...</h3>
+        <div class="action-modal-options">
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_TXT.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_PDF.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_MP3.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-compartilhar" class="modal-overlay">
+    <div class="modal-content action-modal-content">
+        <button class="btn-close">×</button>
+        <h3>Compartilhar Como...</h3>
+        <div class="action-modal-options">
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_TXT.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_PDF.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+            <button class="btn-main-action"><div class="btn-main-icon"><img src="icones/icone_MP3.png" onerror="this.src='icones/icone_configuracoes.png'"></div></button>
+        </div>
+    </div>
+</div>

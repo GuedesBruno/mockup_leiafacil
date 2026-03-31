@@ -1,0 +1,267 @@
+<!-- Tela de Configurações: /screens/_settings.html -->
+<div id="main-app-layout" class="screen view-active">
+    <header>
+        <div class="logo">Configurações</div>
+        <div class="header-right">
+            <button class="btn-icon" id="btn-user-header" title="Usuários">
+                <img src="icones/icone_perfil_mais.png" alt="Usuários">
+                <span>Usuários</span>
+            </button>
+            <button class="btn-icon btn-close-app" title="Fechar Projeto">
+                <img src="icones/icone_sair.png" alt="Fechar" onerror="this.style.display='none'">
+            </button>
+        </div>
+    </header>
+
+    <div class="main-layout-wrapper">
+        <div id="settings-screen" class="inner-screen">
+            <div class="settings-unified-container">
+                <div class="settings-sidebar">
+                    <div class="sidebar-menu-items">
+                        <div class="settings-sidebar-item active" data-target="block-audio">Áudio</div>
+                        <div class="settings-sidebar-item" data-target="block-visual">Visual</div>
+                        <div class="settings-sidebar-item" data-target="block-comunicacao">Comunicação</div>
+                        <div class="settings-sidebar-item" data-target="block-ajuda">Ajuda</div>
+                        <div class="settings-sidebar-item" data-target="block-perfil">Perfil</div>
+                    </div>
+                    <div class="sidebar-footer-actions">
+                        <button class="btn-main-action" id="btn-settings-voltar-fixo" title="Voltar">
+                            <div class="btn-main-icon"><img src="icones/icone_voltar.png" alt="Voltar"></div>
+                        </button>
+                        <button class="btn-main-action" id="btn-settings-salvar" title="Salvar">
+                            <div class="btn-main-icon"><img src="icones/icone_salvar.png" alt="Salvar" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="settings-main-area">
+                    <div class="settings-content" id="settings-scroll-area">
+                        
+                        <!-- Bloco: ÁUDIO -->
+                        <div id="block-audio" class="settings-block">
+                            <div class="settings-block-header">Áudio</div>
+                            <div class="settings-block-content">
+                                <div class="form-group row-align">
+                                    <label>Ativar/Desativar voz</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="tgl-voz" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div id="audio-sub-options">
+                                    <div class="form-group">
+                                        <label>Velocidade da voz</label>
+                                        <input type="number" value="1" step="0.1" min="0.5" max="3">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Voz de menu</label>
+                                        <select><option>Maria (PT-BR)</option><option>João (PT-BR)</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Voz de leitura</label>
+                                        <select><option>Letícia (PT-BR - Neural)</option><option>Ricardo (PT-BR)</option></select>
+                                    </div>
+                                    <div class="form-group row-align mt-20">
+                                        <label>Repetição de Texto</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="tgl-repeticao">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div id="repeticao-sub-options" class="disabled-section" style="padding-left: 20px; border-left: 3px solid #eee; margin-top: 10px;">
+                                        <div class="form-group">
+                                            <label>Número de Repetições</label>
+                                            <input type="number" value="1" min="1" max="5">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Palavra Guia</label>
+                                            <input type="text" placeholder="Ex: Atenção">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloco: VISUAL -->
+                        <div id="block-visual" class="settings-block">
+                            <div class="settings-block-header">Visual</div>
+                            <div class="settings-block-content">
+                                <div class="preview-box">Preview: Exemplo de Leitura</div>
+
+                                <div class="form-group">
+                                    <label>Tipo de fonte de leitura</label>
+                                    <div class="flex-row">
+                                        <select style="flex: 1;">
+                                            <option>Arial</option><option>Verdana</option><option>Comic Sans</option>
+                                            <option>Adelle Sans</option><option>Tiresias LP</option><option>Helvetica</option>
+                                            <option>Times New Roman</option><option>Georgia</option><option>Aphont</option><option>Luciole</option>
+                                        </select>
+                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 10px 20px; border: 2px solid #ccc; font-size:0.9rem;">Fontes do Windows</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tamanho de fonte de leitura</label>
+                                    <input type="number" value="24" min="12" max="72">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ciclo de Memória de Contraste</label>
+                                    <div class="flex-row gap-20">
+                                        <div class="contrast-box c-1 active" title="Contraste 1" data-contrast-level="1">1</div>
+                                        <div class="contrast-box c-2" title="Contraste 2" data-contrast-level="2">2</div>
+                                        <div class="contrast-box c-3" title="Contraste 3" data-contrast-level="3">3</div>
+                                        <div class="contrast-box c-4" title="Contraste 4" data-contrast-level="4">4</div>
+                                        <div class="contrast-box c-5" title="Contraste 5" data-contrast-level="5">5</div>
+                                    </div>
+                                    <button class="btn-main-action mt-20" id="btn-personalizar-contraste-leitura" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:0.9rem;">Personalizar Contraste</button>
+                                </div>
+
+                                <div class="form-group row-align mt-20">
+                                    <label>Destaque na palavra lida</label>
+                                    <label class="switch"><input type="checkbox" id="tgl-destaque"><span class="slider"></span></label>
+                                </div>
+                                <div id="destaque-sub-options" class="disabled-section">
+                                    <button class="btn-main-action" id="btn-personalizar-destaque" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:0.9rem;">Personalizar Destaque</button>
+                                </div>
+
+                                <h3 style="margin: 30px 0 10px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Exibição</h3>
+                                <div class="form-group">
+                                    <label>Tipo de leitura</label>
+                                    <div class="flex-row gap-20">
+                                        <label class="checkbox-group"><input type="radio" name="tipo-leitura" value="teleponto" checked> Teleponto</label>
+                                        <label class="checkbox-group"><input type="radio" name="tipo-leitura" value="linha"> Leitura em linha</label>
+                                    </div>
+                                </div>
+                                <div id="opcoes-teleponto" class="flex-row gap-20" style="margin-bottom: 15px;">
+                                    <label class="checkbox-group"><input type="checkbox"> Máscara Padrão</label>
+                                    <label class="checkbox-group"><input type="checkbox"> Linha de Referência Padrão</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tamanho de fonte de exibição (Menus)</label>
+                                    <select><option>Médio</option><option>Grande</option><option>Gigante</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraste de exibição (Menus)</label>
+                                    <select><option>Claro</option><option>Escuro</option><option>Alto Contraste</option></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloco: COMUNICAÇÃO -->
+                        <div id="block-comunicacao" class="settings-block">
+                            <div class="settings-block-header">Comunicação</div>
+                            <div class="settings-block-content">
+                                <div class="form-group">
+                                    <label>Pasta padrão de salvamento</label>
+                                    <div class="flex-row">
+                                        <input type="text" style="flex: 1;" value="C:\Users\Public\Documents">
+                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 10px 20px; border: 2px solid #ccc; font-size:0.9rem;">Buscar</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Impressora Tinta</label>
+                                    <select><option>HP DeskJet 2700</option><option>Epson L3150</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Impressora Braille</label>
+                                    <select><option>Index Basic-D V5</option><option>Outra (Driver não compatível)</option></select>
+                                    <span style="font-size: 0.85rem; color: #666; margin-top: 5px;">* Recomendado: Index Braille. Outras podem não ter driver compatível.</span>
+                                </div>
+                                <button class="btn-main-action mt-20" style="flex: none; width: 100%; padding: 15px; border: 2px solid #007bff; color: #007bff; font-weight: bold; font-size:1.1rem;">Gestão IA</button>
+                            </div>
+                        </div>
+
+                        <!-- Bloco: AJUDA -->
+                        <div id="block-ajuda" class="settings-block">
+                            <div class="settings-block-header">Ajuda</div>
+                            <div class="settings-block-content" style="display: flex; flex-direction: column; gap: 15px;">
+                                <p><strong>Sobre o LeiaFácil:</strong> Versão 2.0.0 | Serial: LF-88291-BR | Plano IA: Premium</p>
+                                <p><strong>Contatos de Suporte:</strong> suporte@tecassistiva.com.br | 0800 123 4567</p>
+                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Abrir pasta de Logs</button>
+                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Manual de instruções</button>
+                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Guia de atalhos</button>
+                                <div style="display: flex; align-items: center; gap: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                                    <img src="icones/imersao_leiafacil.png" alt="QR Code" style="width: 80px; height: 80px; background: white; border: 1px solid #ccc;">
+                                    <div>
+                                        <p style="margin: 0 0 10px; font-weight: bold;">Página de Imersão</p>
+                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 8px 15px; border: 2px solid #ccc; font-size:0.9rem;" onclick="window.open('https://tecassistiva.com.br/imersao/leiafacil/', '_blank')">Abrir Link no Navegador</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloco: PERFIL -->
+                        <div id="block-perfil" class="settings-block">
+                            <div class="settings-block-content flex-row gap-20">
+                                <button class="btn-main-action" id="btn-criar-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #007bff; background:#f0f7ff; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Criar Perfil">
+                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 3.5rem; font-weight: 900; color: #007bff; line-height: 1;">+</span></div>
+                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #007bff;">Criar Perfil</span>
+                                </button>
+                                <button class="btn-main-action" id="btn-editar-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #ccc; background: white; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Editar Perfil">
+                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 2.5rem; font-weight: 900; color: #666; line-height: 1;">✎</span></div>
+                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #666;">Editar Perfil</span>
+                                </button>
+                                <button class="btn-main-action" id="btn-excluir-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #ffcccc; background:#ffe6e6; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Excluir Perfil">
+                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 2.5rem; font-weight: 900; color: #cc0000; line-height: 1;">🗑</span></div>
+                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #cc0000;">Excluir Perfil</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== COLOR PICKER OVERLAY - LEITURA ========== -->
+            <div id="color-picker-leitura-overlay" class="color-picker-overlay hidden">
+                <div class="color-picker-container">
+                    <div class="color-picker-preview-box" id="color-picker-leitura-preview">
+                        Preview: Exemplo de <span id="leitura-preview-highlight">Leitura</span>
+                    </div>
+                    
+                    <div id="color-picker-leitura-instruction" class="color-picker-instruction">
+                        Escolha a cor de fundo
+                    </div>
+                    
+                    <div id="color-picker-leitura-grid" class="color-picker-grid"></div>
+                </div>
+            </div>
+
+            <!-- ========== COLOR PICKER OVERLAY - DESTAQUE ========== -->
+            <div id="color-picker-destaque-overlay" class="color-picker-overlay hidden">
+                <div class="color-picker-container">
+                    <div class="color-picker-preview-box" id="color-picker-destaque-preview">
+                        Preview: Exemplo de <span id="destaque-preview-highlight">Leitura</span>
+                    </div>
+                    
+                    <div id="color-picker-destaque-instruction" class="color-picker-instruction">
+                        Escolha a cor de destaque
+                    </div>
+                    
+                    <div id="color-picker-destaque-grid" class="color-picker-grid"></div>
+                </div>
+            </div>
+        </div>
+
+<!-- MODAL NOME DO PERFIL -->
+<div id="modal-nome-perfil" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-close">×</button>
+        <h3 style="margin-top: 0; margin-bottom: 20px;">Criar Novo Perfil</h3>
+        <div class="form-group" style="text-align: left;">
+            <label>Nome do Perfil</label>
+            <input type="text" id="input-nome-novo-perfil" placeholder="Digite o nome..." style="font-size: 1.2rem;">
+        </div>
+        <button class="btn-main-action" id="btn-confirmar-nome-perfil" style="width: 100%; max-width: none; padding: 15px; border: 2px solid #007bff; background: #eef4ff; font-weight: bold; font-size: 1.2rem; margin-top: 20px;">Iniciar Configuração</button>
+    </div>
+</div>
+
+<!-- MODAL LISTA DE PERFIS (Para Edição e Exclusão) -->
+<div id="modal-lista-perfis" class="modal-overlay">
+    <div class="modal-content">
+        <button class="btn-close">×</button>
+        <h3 id="titulo-modal-lista" style="margin-top: 0; margin-bottom: 20px;">Selecione um Perfil</h3>
+        <div id="container-lista-perfis" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- A lista será injetada aqui -->
+        </div>
+    </div>
+</div>
