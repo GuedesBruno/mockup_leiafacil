@@ -21,8 +21,8 @@
                         <div class="settings-sidebar-item active" data-target="block-audio">Áudio</div>
                         <div class="settings-sidebar-item" data-target="block-visual">Visual</div>
                         <div class="settings-sidebar-item" data-target="block-comunicacao">Comunicação</div>
-                        <div class="settings-sidebar-item" data-target="block-ajuda">Ajuda</div>
                         <div class="settings-sidebar-item" data-target="block-perfil">Perfil</div>
+                        <div class="settings-sidebar-item" data-target="block-ajuda">Ajuda</div>
                     </div>
                     <div class="sidebar-footer-actions">
                         <button class="btn-main-action" id="btn-settings-voltar-fixo" title="Voltar">
@@ -41,6 +41,7 @@
                         <div id="block-audio" class="settings-block">
                             <div class="settings-block-header">Áudio</div>
                             <div class="settings-block-content">
+                                <!-- Ativar voz -->
                                 <div class="form-group row-align">
                                     <label>Ativar/Desativar voz</label>
                                     <label class="switch">
@@ -48,34 +49,126 @@
                                         <span class="slider"></span>
                                     </label>
                                 </div>
+
                                 <div id="audio-sub-options">
-                                    <div class="form-group">
-                                        <label>Velocidade da voz</label>
-                                        <input type="number" value="1" step="0.1" min="0.5" max="3">
+                                    <!-- ROW 1 - Velocidade e Vozes -->
+                                    <div class="settings-row">
+                                        <div class="form-group">
+                                            <label>Velocidade da voz</label>
+                                            <div class="flex-row gap-10">
+                                                <button class="btn-control" id="btn-speed-voz-minus">−</button>
+                                                <input type="number" id="input-speed-voz" value="1" step="0.1" min="0.5" max="3" style="flex: 1; text-align: center;">
+                                                <button class="btn-control" id="btn-speed-voz-plus">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Voz de menu</label>
+                                            <select><option>Maria (PT-BR)</option><option>João (PT-BR)</option></select>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Voz de menu</label>
-                                        <select><option>Maria (PT-BR)</option><option>João (PT-BR)</option></select>
+
+                                    <!-- Velocidade de Leitura + Controle de Navegação Row -->
+                                    <div class="settings-row">
+                                        <div class="form-group">
+                                            <label>Controle de navegação</label>
+                                            <select>
+                                                <option>Palavra por palavra</option>
+                                                <option>Frase por frase</option>
+                                                <option>Parágrafo por parágrafo</option>
+                                                <option>Página por página</option>
+                                                <option>Entre marcadores</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Voz de leitura</label>
-                                        <select><option>Letícia (PT-BR - Neural)</option><option>Ricardo (PT-BR)</option></select>
-                                    </div>
-                                    <div class="form-group row-align mt-20">
+
+                                    <hr class="settings-divider">
+
+                                    <!-- Repetição de Texto -->
+                                    <div class="form-group row-align">
                                         <label>Repetição de Texto</label>
                                         <label class="switch">
                                             <input type="checkbox" id="tgl-repeticao">
                                             <span class="slider"></span>
                                         </label>
                                     </div>
-                                    <div id="repeticao-sub-options" class="disabled-section" style="padding-left: 20px; border-left: 3px solid #eee; margin-top: 10px;">
-                                        <div class="form-group">
-                                            <label>Número de Repetições</label>
-                                            <input type="number" value="1" min="1" max="5">
+                                    <div id="repeticao-sub-options" class="disabled-section">
+                                        <div class="settings-row">
+                                            <div class="form-group">
+                                                <label>Número de Repetições</label>
+                                                <input type="number" value="1" min="1" max="5">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Palavra Guia</label>
+                                                <input type="text" placeholder="Ex: Atenção">
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <!-- Leitura Silabada -->
+                                    <div class="form-group row-align">
+                                        <label>Leitura Silabada</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="tgl-leitura-silabada">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div id="silabada-sub-options" class="disabled-section">
+                                        <div class="settings-row">
+                                            <div class="form-group">
+                                                <label>Complexidade da Palavra</label>
+                                                <select>
+                                                    <option>2 ou mais</option>
+                                                    <option>3 ou mais</option>
+                                                    <option>4 ou mais</option>
+                                                    <option>5 ou mais</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Tempo entre sílabas</label>
+                                                <select>
+                                                    <option>0.1s</option>
+                                                    <option>0.2s</option>
+                                                    <option>0.3s</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pausa entre Palavras -->
+                                    <div class="form-group row-align">
+                                        <label>Pausa entre palavras</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="tgl-pausa-palavras">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div id="pausa-palavras-sub-options" class="disabled-section">
                                         <div class="form-group">
-                                            <label>Palavra Guia</label>
-                                            <input type="text" placeholder="Ex: Atenção">
+                                            <label>Tempo adicional entre palavras</label>
+                                            <select>
+                                                <option>1s</option>
+                                                <option>2s</option>
+                                                <option>3s</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pausa entre Frases -->
+                                    <div class="form-group row-align">
+                                        <label>Pausa entre frases</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="tgl-pausa-frases">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div id="pausa-frases-sub-options" class="disabled-section">
+                                        <div class="form-group">
+                                            <label>Tempo adicional entre frases</label>
+                                            <select>
+                                                <option>1s</option>
+                                                <option>2s</option>
+                                                <option>3s</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -88,60 +181,168 @@
                             <div class="settings-block-content">
                                 <div class="preview-box">Preview: Exemplo de Leitura</div>
 
-                                <div class="form-group">
-                                    <label>Tipo de fonte de leitura</label>
-                                    <div class="flex-row">
-                                        <select style="flex: 1;">
-                                            <option>Arial</option><option>Verdana</option><option>Comic Sans</option>
-                                            <option>Adelle Sans</option><option>Tiresias LP</option><option>Helvetica</option>
-                                            <option>Times New Roman</option><option>Georgia</option><option>Aphont</option><option>Luciole</option>
-                                        </select>
-                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 10px 20px; border: 2px solid #ccc; font-size:0.9rem;">Fontes do Windows</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tamanho de fonte de leitura</label>
-                                    <input type="number" value="24" min="12" max="72">
-                                </div>
+                                <!-- Ciclo de Memória de Contraste - PRIMEIRO -->
                                 <div class="form-group">
                                     <label>Ciclo de Memória de Contraste</label>
-                                    <div class="flex-row gap-20">
-                                        <div class="contrast-box c-1 active" title="Contraste 1" data-contrast-level="1">1</div>
-                                        <div class="contrast-box c-2" title="Contraste 2" data-contrast-level="2">2</div>
-                                        <div class="contrast-box c-3" title="Contraste 3" data-contrast-level="3">3</div>
-                                        <div class="contrast-box c-4" title="Contraste 4" data-contrast-level="4">4</div>
-                                        <div class="contrast-box c-5" title="Contraste 5" data-contrast-level="5">5</div>
+                                    <div class="contrast-cycles-row">
+                                        <div class="contrast-box c-1 active contrast-cycle-btn" id="contrast-cycle-1" data-cycle-id="1" title="Ciclo 1 (Padrão)">1</div>
+                                        <div class="contrast-box c-2 contrast-cycle-btn" id="contrast-cycle-2" data-cycle-id="2" title="Ciclo 2">2</div>
+                                        <div class="contrast-box c-3 contrast-cycle-btn" id="contrast-cycle-3" data-cycle-id="3" title="Ciclo 3">3</div>
+                                        <div class="contrast-box c-4 contrast-cycle-btn" id="contrast-cycle-4" data-cycle-id="4" title="Ciclo 4">4</div>
+                                        <div class="contrast-box c-5 contrast-cycle-btn" id="contrast-cycle-5" data-cycle-id="5" title="Ciclo 5">5</div>
                                     </div>
-                                    <button class="btn-main-action mt-20" id="btn-personalizar-contraste-leitura" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:0.9rem;">Personalizar Contraste</button>
+                                    <button type="button" class="btn-main-action" id="btn-personalizar-contraste" style="width: auto; margin-top: 15px; display: inline-block;">Personalizar Contraste</button>
                                 </div>
 
-                                <div class="form-group row-align mt-20">
+                                <!-- ROW 1 - Fonte e tamanho -->
+                                <div class="settings-row">
+                                    <div class="form-group">
+                                        <label>Fonte de leitura</label>
+                                        <select>
+                                            <option>Arial</option>
+                                            <option>Verdana</option>
+                                            <option>Comic Sans</option>
+                                            <option>Adelle Sans</option>
+                                            <option>Tiresias LP</option>
+                                            <option>Helvetica</option>
+                                            <option>Times New Roman</option>
+                                            <option>Georgia</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tamanho da fonte</label>
+                                        <input type="number" value="24" min="12" max="72">
+                                    </div>
+                                </div>
+
+                                <!-- ROW 2 - Cores de Leitura (Fundo e Letra) -->
+                                <div class="settings-row color-rect-row">
+                                    <div class="form-group">
+                                        <label>Cor de Fundo</label>
+                                        <button type="button" class="color-picker-trigger" id="btn-cor-fundo-leitura" title="Escolher cor de fundo">
+                                            <span class="color-picker-trigger-swatch" style="background:#ffffff;"></span>
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Cor do Texto</label>
+                                        <button type="button" class="color-picker-trigger" id="btn-cor-letra-leitura" title="Escolher cor do texto">
+                                            <span class="color-picker-trigger-swatch" style="background:#000000;"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Destaque -->
+                                <div class="form-group row-align">
                                     <label>Destaque na palavra lida</label>
-                                    <label class="switch"><input type="checkbox" id="tgl-destaque"><span class="slider"></span></label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="tgl-destaque">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
                                 <div id="destaque-sub-options" class="disabled-section">
-                                    <button class="btn-main-action" id="btn-personalizar-destaque" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:0.9rem;">Personalizar Destaque</button>
+                                    <div class="settings-row">
+                                        <div class="form-group">
+                                            <label>Cor do Fundo de Destaque</label>
+                                            <button type="button" class="color-picker-trigger" id="btn-cor-fundo-destaque" title="Escolher cor do fundo de destaque">
+                                                <span class="color-picker-trigger-swatch" style="background:#ffff00;"></span>
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Cor do Texto de Destaque</label>
+                                            <button type="button" class="color-picker-trigger" id="btn-cor-texto-destaque" title="Escolher cor do texto de destaque">
+                                                <span class="color-picker-trigger-swatch" style="background:#0000ff;"></span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <h3 style="margin: 30px 0 10px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Exibição</h3>
+                                <hr class="settings-divider">
+
+                                <h3>Exibição</h3>
+
+                                <!-- Tipo de Leitura e Opções Teleponto em grid -->
                                 <div class="form-group">
-                                    <label>Tipo de leitura</label>
-                                    <div class="flex-row gap-20">
+                                    <label style="display: block; margin-bottom: 15px; font-weight: 500;">Tipo de leitura</label>
+                                    <div class="flex-row gap-20" style="margin-bottom: 20px;">
                                         <label class="checkbox-group"><input type="radio" name="tipo-leitura" value="teleponto" checked> Teleponto</label>
                                         <label class="checkbox-group"><input type="radio" name="tipo-leitura" value="linha"> Leitura em linha</label>
                                     </div>
+                                    
+                                    <label style="display: block; margin-bottom: 15px; font-weight: 500;">Opções teleponto</label>
+                                    <div class="flex-row gap-20">
+                                        <label class="checkbox-group"><input type="checkbox"> Máscara Padrão</label>
+                                        <label class="checkbox-group"><input type="checkbox"> Linha de Referência</label>
+                                    </div>
                                 </div>
-                                <div id="opcoes-teleponto" class="flex-row gap-20" style="margin-bottom: 15px;">
-                                    <label class="checkbox-group"><input type="checkbox"> Máscara Padrão</label>
-                                    <label class="checkbox-group"><input type="checkbox"> Linha de Referência Padrão</label>
+
+                                <!-- Tamanho e Contraste de Menu -->
+                                <div class="settings-row">
+                                    <div class="form-group">
+                                        <label>Tamanho de fonte (Menus)</label>
+                                        <select><option>Médio</option><option>Grande</option><option>Gigante</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contraste (Menus)</label>
+                                        <select><option>Claro</option><option>Escuro</option><option>Alto Contraste</option></select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Tamanho de fonte de exibição (Menus)</label>
-                                    <select><option>Médio</option><option>Grande</option><option>Gigante</option></select>
+
+                                <!-- Espaçamento e Abertura da Cortina -->
+                                <div class="settings-row">
+                                    <div class="form-group">
+                                        <label>Espaçamento Ampliado</label>
+                                        <select>
+                                            <option>Simples</option>
+                                            <option>Duplo</option>
+                                            <option>Triplo</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Abertura da cortina</label>
+                                        <select>
+                                            <option>20/80</option>
+                                            <option>30/70</option>
+                                            <option>40/60</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Contraste de exibição (Menus)</label>
-                                    <select><option>Claro</option><option>Escuro</option><option>Alto Contraste</option></select>
+
+                                <!-- Texto em Bloco -->
+                                <div class="form-group row-align">
+                                    <label>Texto em bloco</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="tgl-texto-bloco">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div id="texto-bloco-sub-options" class="disabled-section">
+                                    <div class="settings-row">
+                                        <div class="form-group">
+                                            <label>Palavras por linha</label>
+                                            <select>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Linhas no bloco</label>
+                                            <select>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,56 +355,65 @@
                                     <label>Pasta padrão de salvamento</label>
                                     <div class="flex-row">
                                         <input type="text" style="flex: 1;" value="C:\Users\Public\Documents">
-                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 10px 20px; border: 2px solid #ccc; font-size:0.9rem;">Buscar</button>
+                                        <button class="btn-main-action" style="flex: none; width: auto; margin-left: 10px;">Procurar</button>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Impressora Tinta</label>
-                                    <select><option>HP DeskJet 2700</option><option>Epson L3150</option></select>
+
+                                <div class="settings-row">
+                                    <div class="form-group">
+                                        <label>Impressora Tinta</label>
+                                        <select><option>HP DeskJet 2700</option><option>Epson L3150</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Impressora Braille</label>
+                                        <select><option>Index Basic-D V5</option><option>Outra</option></select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Impressora Braille</label>
-                                    <select><option>Index Basic-D V5</option><option>Outra (Driver não compatível)</option></select>
-                                    <span style="font-size: 0.85rem; color: #666; margin-top: 5px;">* Recomendado: Index Braille. Outras podem não ter driver compatível.</span>
-                                </div>
-                                <button class="btn-main-action mt-20" style="flex: none; width: 100%; padding: 15px; border: 2px solid #007bff; color: #007bff; font-weight: bold; font-size:1.1rem;">Gestão IA</button>
+
+                                <button class="btn-main-action btn-large">Gestão IA</button>
                             </div>
                         </div>
 
                         <!-- Bloco: AJUDA -->
                         <div id="block-ajuda" class="settings-block">
-                            <div class="settings-block-header">Ajuda</div>
-                            <div class="settings-block-content" style="display: flex; flex-direction: column; gap: 15px;">
-                                <p><strong>Sobre o LeiaFácil:</strong> Versão 2.0.0 | Serial: LF-88291-BR | Plano IA: Premium</p>
-                                <p><strong>Contatos de Suporte:</strong> suporte@tecassistiva.com.br | 0800 123 4567</p>
-                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Abrir pasta de Logs</button>
-                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Manual de instruções</button>
-                                <button class="btn-main-action" style="flex: none; width: auto; padding: 10px; border: 2px solid #ccc; font-size:1rem;">Guia de atalhos</button>
-                                <div style="display: flex; align-items: center; gap: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
-                                    <img src="icones/imersao_leiafacil.png" alt="QR Code" style="width: 80px; height: 80px; background: white; border: 1px solid #ccc;">
-                                    <div>
-                                        <p style="margin: 0 0 10px; font-weight: bold;">Página de Imersão</p>
-                                        <button class="btn-main-action" style="flex: none; width: auto; padding: 8px 15px; border: 2px solid #ccc; font-size:0.9rem;" onclick="window.open('https://tecassistiva.com.br/imersao/leiafacil/', '_blank')">Abrir Link no Navegador</button>
-                                    </div>
+                            <div class="settings-block-header">Ajuda e Suporte</div>
+                            <div class="settings-block-content">
+                                <div class="help-box">
+                                    <p><strong>Sobre o LeiaFácil:</strong></p>
+                                    <p>Versão 2.0.0 | Serial: LF-88291-BR | Plano IA: Premium</p>
+                                </div>
+
+                                <div class="help-box">
+                                    <p><strong>Contatos de Suporte:</strong></p>
+                                    <p>suporte@tecassistiva.com.br<br>0800 123 4567</p>
+                                </div>
+
+                                <div class="help-buttons">
+                                    <button class="btn-main-action">Abrir pasta de Logs</button>
+                                    <button class="btn-main-action">Manual de instruções</button>
+                                    <button class="btn-main-action">Guia de atalhos</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Bloco: PERFIL -->
                         <div id="block-perfil" class="settings-block">
-                            <div class="settings-block-content flex-row gap-20">
-                                <button class="btn-main-action" id="btn-criar-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #007bff; background:#f0f7ff; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Criar Perfil">
-                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 3.5rem; font-weight: 900; color: #007bff; line-height: 1;">+</span></div>
-                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #007bff;">Criar Perfil</span>
-                                </button>
-                                <button class="btn-main-action" id="btn-editar-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #ccc; background: white; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Editar Perfil">
-                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 2.5rem; font-weight: 900; color: #666; line-height: 1;">✎</span></div>
-                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #666;">Editar Perfil</span>
-                                </button>
-                                <button class="btn-main-action" id="btn-excluir-perfil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; max-width: none; padding: 20px; border: 2px solid #ffcccc; background:#ffe6e6; border-radius: 12px; cursor: pointer; transition: transform 0.2s;" title="Excluir Perfil">
-                                    <div class="btn-main-icon" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border: none; box-shadow: none; background: transparent;"><span style="font-size: 2.5rem; font-weight: 900; color: #cc0000; line-height: 1;">🗑</span></div>
-                                    <span class="btn-main-label" style="font-size: 1.3rem; font-weight: bold; color: #cc0000;">Excluir Perfil</span>
-                                </button>
+                            <div class="settings-block-header">Meus Perfis</div>
+                            <div class="settings-block-content">
+                                <div class="profiles-grid">
+                                    <button class="btn-profile btn-create" id="btn-criar-perfil">
+                                        <img src="icones/icone_plus.png" alt="Criar" class="btn-profile-icon">
+                                        <span>Criar Perfil</span>
+                                    </button>
+                                    <button class="btn-profile btn-edit" id="btn-editar-perfil">
+                                        <img src="icones/editar.png" alt="Editar" class="btn-profile-icon">
+                                        <span>Editar Perfil</span>
+                                    </button>
+                                    <button class="btn-profile btn-delete" id="btn-excluir-perfil">
+                                        <img src="icones/excluir.png" alt="Excluir" class="btn-profile-icon">
+                                        <span>Excluir Perfil</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -223,6 +433,15 @@
                     </div>
                     
                     <div id="color-picker-leitura-grid" class="color-picker-grid"></div>
+
+                    <div class="color-picker-actions">
+                        <button type="button" id="btn-color-cancel-leitura" class="btn-main-action" title="Cancelar">
+                            <div class="btn-main-icon"><img src="icones/icone_voltar.png" alt="Cancelar"></div>
+                        </button>
+                        <button type="button" id="btn-color-save-leitura" class="btn-main-action" title="Salvar">
+                            <div class="btn-main-icon"><img src="icones/icone_salvar.png" alt="Salvar" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -238,6 +457,15 @@
                     </div>
                     
                     <div id="color-picker-destaque-grid" class="color-picker-grid"></div>
+
+                    <div class="color-picker-actions">
+                        <button type="button" id="btn-color-cancel-destaque" class="btn-main-action" title="Cancelar">
+                            <div class="btn-main-icon"><img src="icones/icone_voltar.png" alt="Cancelar"></div>
+                        </button>
+                        <button type="button" id="btn-color-save-destaque" class="btn-main-action" title="Salvar">
+                            <div class="btn-main-icon"><img src="icones/icone_salvar.png" alt="Salvar" onerror="this.src='icones/icone_configuracoes.png'"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -84,13 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 const rect = btn.getBoundingClientRect();
                 let leftPos = rect.left + (rect.width / 2);
+                const dropdownEstimatedHeight = 300;
+                const spacing = 10;
                 
                 // Evita que o menu vaze pela direita da tela se o botão estiver no header (canto direito)
                 if (leftPos + 140 > window.innerWidth) {
                     leftPos = window.innerWidth - 150;
                 }
+
+                // Evita que o menu vaze pela esquerda
+                if (leftPos - 140 < 10) {
+                    leftPos = 150;
+                }
+
+                const spaceBelow = window.innerHeight - rect.bottom;
+                const openUpwards = spaceBelow < dropdownEstimatedHeight;
+
+                let topPos;
+                if (openUpwards) {
+                    topPos = Math.max(10, rect.top - dropdownEstimatedHeight - spacing);
+                } else {
+                    topPos = rect.bottom + spacing;
+                }
                 
-                globalUserDropdown.style.top = `${rect.bottom + 10}px`;
+                globalUserDropdown.style.top = `${topPos}px`;
                 globalUserDropdown.style.left = `${leftPos}px`;
                 globalUserDropdown.classList.toggle('show');
             });
@@ -350,7 +367,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         const targetId = e.currentTarget.dataset.target;
                         const targetEl = document.getElementById(targetId);
                         if(targetEl && scrollArea) {
-                            scrollArea.scrollTop = targetEl.offsetTop - 30; // 30px de respiro no topo
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                            // Fallback para garantir deslocamento no container correto
+                            const targetTop = targetEl.getBoundingClientRect().top - scrollArea.getBoundingClientRect().top + scrollArea.scrollTop - 24;
+                            scrollArea.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
                         }
                     });
                 });
@@ -389,7 +410,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 const destSub = document.getElementById('destaque-sub-options');
                 if(toggleDestaque && destSub) toggleDestaque.addEventListener('change', (e) => destSub.classList.toggle('disabled-section', !e.target.checked));
 
-                /* ===== COLOR PICKER LOGIC - LEITURA ===== */
+                // Novos toggles para Áudio
+                const toggleSilabada = document.getElementById('tgl-leitura-silabada');
+                const silabadaSub = document.getElementById('silabada-sub-options');
+                if(toggleSilabada && silabadaSub) toggleSilabada.addEventListener('change', (e) => silabadaSub.classList.toggle('disabled-section', !e.target.checked));
+
+                const togglePausaPalavras = document.getElementById('tgl-pausa-palavras');
+                const pausaPalavrasSub = document.getElementById('pausa-palavras-sub-options');
+                if(togglePausaPalavras && pausaPalavrasSub) togglePausaPalavras.addEventListener('change', (e) => pausaPalavrasSub.classList.toggle('disabled-section', !e.target.checked));
+
+                const togglePausaFrases = document.getElementById('tgl-pausa-frases');
+                const pausaFrasesSub = document.getElementById('pausa-frases-sub-options');
+                if(togglePausaFrases && pausaFrasesSub) togglePausaFrases.addEventListener('change', (e) => pausaFrasesSub.classList.toggle('disabled-section', !e.target.checked));
+
+                // Toggle para Texto em Bloco
+                const toggleTextoBloco = document.getElementById('tgl-texto-bloco');
+                const textoBlocoSub = document.getElementById('texto-bloco-sub-options');
+                if(toggleTextoBloco && textoBlocoSub) toggleTextoBloco.addEventListener('change', (e) => textoBlocoSub.classList.toggle('disabled-section', !e.target.checked));
+
+                // Velocidade da Voz - Controles
+                const inputSpeedVoz = document.getElementById('input-speed-voz');
+                const btnSpeedVozMinus = document.getElementById('btn-speed-voz-minus');
+                const btnSpeedVozPlus = document.getElementById('btn-speed-voz-plus');
+                
+                if (btnSpeedVozMinus) btnSpeedVozMinus.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const current = parseFloat(inputSpeedVoz.value);
+                    const newValue = Math.max(parseFloat(inputSpeedVoz.min), current - 0.1);
+                    inputSpeedVoz.value = newValue.toFixed(1);
+                });
+                
+                if (btnSpeedVozPlus) btnSpeedVozPlus.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const current = parseFloat(inputSpeedVoz.value);
+                    const newValue = Math.min(parseFloat(inputSpeedVoz.max), current + 0.1);
+                    inputSpeedVoz.value = newValue.toFixed(1);
+                });
+
+                /* ===== CYCLE-BASED COLOR PICKER SYSTEM ===== */
+                
+                // Color palette
                 const colorPalette = [
                     { name: 'Branco', hex: '#FFFFFF' },
                     { name: 'Preto', hex: '#000000' },
@@ -402,19 +462,87 @@ document.addEventListener('DOMContentLoaded', () => {
                     { name: 'Marrom', hex: '#8B4513' },
                     { name: 'Roxo', hex: '#AA00FF' },
                     { name: 'Bege', hex: '#F5DEB3' },
-                    { name: 'Cinza', hex: '#808080' }
+                    { name: 'Laranja', hex: '#FF8C00' }
                 ];
 
-                let colorPickerState = {
-                    mode: 'leitura', // 'leitura' ou 'destaque'
-                    stage: 'background', // 'background' ou 'text'
-                    backgroundColor: '#FFFFFF',
-                    textColor: '#000000',
-                    highlightColor: '#FFFF00',
-                    highlightTextColor: '#000000'
+                // Cycle memory: each cycle stores its color preferences
+                const cycleMemory = {
+                    1: { bgColor: '#FFFFFF', textColor: '#000000', destaqueEnable: false, destaqueBgColor: '#FFFF00', destaqueTextColor: '#0000FF' },
+                    2: { bgColor: null, textColor: null, destaqueEnable: false, destaqueBgColor: null, destaqueTextColor: null },
+                    3: { bgColor: null, textColor: null, destaqueEnable: false, destaqueBgColor: null, destaqueTextColor: null },
+                    4: { bgColor: null, textColor: null, destaqueEnable: false, destaqueBgColor: null, destaqueTextColor: null },
+                    5: { bgColor: null, textColor: null, destaqueEnable: false, destaqueBgColor: null, destaqueTextColor: null }
                 };
 
-                // Função auxiliar para renderizar grid de cores
+                // Current active cycle
+                let activeCycleId = 1;
+                let colorPickerMode = null; // 'background', 'text', 'destaque-bg', 'destaque-text'
+                let selectedColorType = null; // 'bgColor', 'textColor', 'destaqueBgColor', 'destaqueTextColor'
+
+                const leituraOverlay = document.getElementById('color-picker-leitura-overlay');
+                const destaqueOverlay = document.getElementById('color-picker-destaque-overlay');
+
+                // Update all cycle buttons visual state
+                const updateCycleButtons = () => {
+                    document.querySelectorAll('.contrast-cycle-btn').forEach(btn => {
+                        const cycleId = parseInt(btn.dataset.cycleId);
+                        if (cycleId === activeCycleId) {
+                            btn.classList.add('active');
+                            btn.classList.remove('inactive');
+                        } else {
+                            btn.classList.remove('active');
+                            btn.classList.add('inactive');
+                        }
+                    });
+                };
+
+                // Update all trigger button swatches based on active cycle
+                const updateTriggerSwatches = () => {
+                    const cycle = cycleMemory[activeCycleId];
+                    
+                    // Update color trigger buttons with cycle colors
+                    const bgLeituraBtn = document.querySelector('#btn-cor-fundo-leitura .color-picker-trigger-swatch');
+                    const textLeituraBtn = document.querySelector('#btn-cor-letra-leitura .color-picker-trigger-swatch');
+                    const bgDestaqueBtn = document.querySelector('#btn-cor-fundo-destaque .color-picker-trigger-swatch');
+                    const textDestaqueBtn = document.querySelector('#btn-cor-texto-destaque .color-picker-trigger-swatch');
+                    
+                    if (bgLeituraBtn) bgLeituraBtn.style.backgroundColor = cycle.bgColor || '#FFFFFF';
+                    if (textLeituraBtn) textLeituraBtn.style.backgroundColor = cycle.textColor || '#000000';
+                    if (bgDestaqueBtn) bgDestaqueBtn.style.backgroundColor = cycle.destaqueBgColor || '#FFFF00';
+                    if (textDestaqueBtn) textDestaqueBtn.style.backgroundColor = cycle.destaqueTextColor || '#0000FF';
+
+                    // Update preview box
+                    const previewBox = document.querySelector('.preview-box');
+                    if (previewBox) {
+                        previewBox.style.background = cycle.bgColor || '#FFFFFF';  // Use background to override gradient
+                        previewBox.style.color = cycle.textColor || '#000000';
+                    }
+
+                    // Update destaque toggle state
+                    const destaqueToggle = document.getElementById('tgl-destaque');
+                    const destaqueSubOptions = document.getElementById('destaque-sub-options');
+                    if (destaqueToggle) {
+                        destaqueToggle.checked = cycle.destaqueEnable;
+                        if (destaqueSubOptions) {
+                            if (cycle.destaqueEnable) {
+                                destaqueSubOptions.classList.remove('disabled-section');
+                            } else {
+                                destaqueSubOptions.classList.add('disabled-section');
+                            }
+                        }
+                    }
+                };
+
+                // Cycle button click handlers
+                document.querySelectorAll('.contrast-cycle-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        activeCycleId = parseInt(btn.dataset.cycleId);
+                        updateCycleButtons();
+                        updateTriggerSwatches();
+                    });
+                });
+
+                // Render color grid
                 const renderColorGrid = (gridId, excludeColor = null) => {
                     const grid = document.getElementById(gridId);
                     if (!grid) return;
@@ -426,129 +554,175 @@ document.addEventListener('DOMContentLoaded', () => {
                         square.style.backgroundColor = color.hex;
                         square.title = color.name;
                         
-                        // Marcear se está excluída
                         if (excludeColor && color.hex === excludeColor) {
                             square.classList.add('disabled');
                         } else {
-                            square.addEventListener('click', () => selectColor(color.hex, gridId));
+                            square.addEventListener('click', () => selectColor(color.hex, square));
                         }
                         
                         grid.appendChild(square);
                     });
                 };
 
-                // Função para selecionar cor
-                const selectColor = (hex, gridId) => {
-                    const gridContainer = gridId.split('-').slice(0, 3).join('-'); // 'color-picker-leitura' ou 'color-picker-destaque'
-                    const isLeitura = gridContainer === 'color-picker-leitura';
+                // Select color in picker - now saves to active cycle
+                const selectColor = (hex, squareEl) => {
+                    const cycle = cycleMemory[activeCycleId];
                     
-                    if (colorPickerState.stage === 'background') {
-                        if (isLeitura) {
-                            colorPickerState.backgroundColor = hex;
-                            document.getElementById('color-picker-leitura-preview').style.backgroundColor = hex;
-                            document.getElementById('leitura-preview-highlight').style.color = hex === '#000000' ? '#FFFFFF' : '#000000';
-                        } else {
-                            colorPickerState.highlightColor = hex;
-                            document.getElementById('color-picker-destaque-preview').style.backgroundColor = hex;
+                    // Mark as selected
+                    document.querySelectorAll('.color-square').forEach(sq => sq.classList.remove('selected'));
+                    if (squareEl) squareEl.classList.add('selected');
+                    
+                    // Save to active cycle
+                    if (selectedColorType) {
+                        cycle[selectedColorType] = hex;
+                        
+                        // Update preview in overlay based on which color type was selected
+                        if (selectedColorType === 'bgColor') {
+                            const leituraPreview = document.getElementById('color-picker-leitura-preview');
+                            if (leituraPreview) {
+                                leituraPreview.style.background = hex;  // Use background, not backgroundColor
+                            }
+                        } else if (selectedColorType === 'textColor') {
+                            const leituraHighlight = document.getElementById('leitura-preview-highlight');
+                            if (leituraHighlight) {
+                                leituraHighlight.style.color = hex;
+                            }
+                        } else if (selectedColorType === 'destaqueBgColor') {
+                            const destaquePreview = document.getElementById('color-picker-destaque-preview');
+                            if (destaquePreview) {
+                                destaquePreview.style.background = hex;  // Use background, not backgroundColor
+                            }
+                        } else if (selectedColorType === 'destaqueTextColor') {
+                            const destaqueHighlight = document.getElementById('destaque-preview-highlight');
+                            if (destaqueHighlight) {
+                                destaqueHighlight.style.color = hex;
+                            }
                         }
                         
-                        // Marque como selecionado
-                        document.querySelectorAll(`#${gridId} .color-square`).forEach(sq => sq.classList.remove('selected'));
-                        event.target.classList.add('selected');
-                        
-                        // Ir para seleção de TEXTO
-                        setTimeout(() => {
-                            colorPickerState.stage = 'text';
-                            const instruction = isLeitura 
-                                ? document.getElementById('color-picker-leitura-instruction')
-                                : document.getElementById('color-picker-destaque-instruction');
-                            instruction.innerText = 'Escolha a cor do texto';
-                            
-                            // Re-renderizar grid excluindo a cor de fundo
-                            renderColorGrid(gridId, hex);
-                        }, 300);
-                    } else if (colorPickerState.stage === 'text') {
-                        if (isLeitura) {
-                            colorPickerState.textColor = hex;
-                            document.getElementById('leitura-preview-highlight').style.color = hex;
-                            document.getElementById('leitura-preview-highlight').style.backgroundColor = colorPickerState.backgroundColor;
-                        } else {
-                            colorPickerState.highlightTextColor = hex;
-                            document.getElementById('destaque-preview-highlight').style.color = hex;
-                            document.getElementById('destaque-preview-highlight').style.backgroundColor = colorPickerState.highlightColor;
-                        }
-                        
-                        // Marque como selecionado
-                        document.querySelectorAll(`#${gridId} .color-square`).forEach(sq => sq.classList.remove('selected'));
-                        event.target.classList.add('selected');
-                        
-                        alert('✓ Cores selecionadas! Clique em Salvar para confirmar.');
+                        // Update trigger buttons
+                        updateTriggerSwatches();
                     }
                 };
 
-                // Abrir Color Picker - LEITURA
-                document.getElementById('btn-personalizar-contraste-leitura')?.addEventListener('click', () => {
-                    colorPickerState = {
-                        ...colorPickerState,
-                        mode: 'leitura',
-                        stage: 'background'
-                    };
-                    renderColorGrid('color-picker-leitura-grid');
-                    document.getElementById('color-picker-leitura-overlay').classList.remove('hidden');
-                    document.getElementById('color-picker-leitura-instruction').innerText = 'Escolha a cor de fundo';
-                });
-
-                // Abrir Color Picker - DESTAQUE
-                document.getElementById('btn-personalizar-destaque')?.addEventListener('click', () => {
-                    colorPickerState = {
-                        ...colorPickerState,
-                        mode: 'destaque',
-                        stage: 'background'
-                    };
-                    renderColorGrid('color-picker-destaque-grid');
-                    document.getElementById('color-picker-destaque-overlay').classList.remove('hidden');
-                    document.getElementById('color-picker-destaque-instruction').innerText = 'Escolha a cor de destaque';
-                });
-
-                // Fechar Color Pickers ao clicar em Voltar
-                const originalVoltar = document.getElementById('btn-settings-voltar-fixo')?.onclick;
-                document.getElementById('btn-settings-voltar-fixo')?.addEventListener('click', () => {
-                    const leituraOverlay = document.getElementById('color-picker-leitura-overlay');
-                    const destaqueOverlay = document.getElementById('color-picker-destaque-overlay');
+                // Button handlers for individual color types
+                const openColorPicker = (colorType, gridId) => {
+                    selectedColorType = colorType;
+                    const cycle = cycleMemory[activeCycleId];
+                    const currentColor = cycle[colorType];
                     
-                    if (leituraOverlay && !leituraOverlay.classList.contains('hidden')) {
-                        leituraOverlay.classList.add('hidden');
-                        return;
-                    }
-                    if (destaqueOverlay && !destaqueOverlay.classList.contains('hidden')) {
-                        destaqueOverlay.classList.add('hidden');
-                        colorPickerState.stage = 'background';
-                        return;
-                    }
-                });
-
-                // Salvar Cores ao clicar em Salvar
-                const originalSalvar = document.getElementById('btn-settings-salvar')?.onclick;
-                document.getElementById('btn-settings-salvar')?.addEventListener('click', () => {
-                    const leituraOverlay = document.getElementById('color-picker-leitura-overlay');
-                    const destaqueOverlay = document.getElementById('color-picker-destaque-overlay');
+                    renderColorGrid(gridId, currentColor);
                     
-                    if (leituraOverlay && !leituraOverlay.classList.contains('hidden')) {
-                        leituraOverlay.classList.add('hidden');
-                        alert('✓ Cores de leitura salvas com sucesso!');
-                        return;
+                    // Determine which overlay to show and initialize preview
+                    if (colorType === 'bgColor' || colorType === 'textColor') {
+                        if (leituraOverlay) {
+                            const instruction = document.getElementById('color-picker-leitura-instruction');
+                            const leituraPreview = document.getElementById('color-picker-leitura-preview');
+                            
+                            if (instruction) {
+                                instruction.innerText = colorType === 'bgColor' 
+                                    ? 'Escolha a COR DE FUNDO' 
+                                    : 'Escolha a COR DO TEXTO';
+                            }
+                            
+                            // Initialize preview with current cycle colors
+                            if (leituraPreview) {
+                                leituraPreview.style.background = cycle.bgColor || '#FFFFFF';  // Use background to override gradient
+                                leituraPreview.style.color = cycle.textColor || '#000000';
+                            }
+                            
+                            leituraOverlay.classList.remove('hidden');
+                        }
+                    } else if (colorType === 'destaqueBgColor' || colorType === 'destaqueTextColor') {
+                        if (destaqueOverlay) {
+                            const instruction = document.getElementById('color-picker-destaque-instruction');
+                            const destaquePreview = document.getElementById('color-picker-destaque-preview');
+                            
+                            if (instruction) {
+                                instruction.innerText = colorType === 'destaqueBgColor' 
+                                    ? 'Escolha a COR DE DESTAQUE' 
+                                    : 'Escolha a COR DO TEXTO DE DESTAQUE';
+                            }
+                            
+                            // Initialize preview with current cycle colors
+                            if (destaquePreview) {
+                                destaquePreview.style.background = cycle.destaqueBgColor || '#FFFF00';  // Use background to override gradient
+                                const destaqueHighlight = document.getElementById('destaque-preview-highlight');
+                                if (destaqueHighlight) destaqueHighlight.style.color = cycle.destaqueTextColor || '#0000FF';
+                            }
+                            
+                            destaqueOverlay.classList.remove('hidden');
+                        }
                     }
-                    if (destaqueOverlay && !destaqueOverlay.classList.contains('hidden')) {
-                        destaqueOverlay.classList.add('hidden');
-                        colorPickerState.stage = 'background';
-                        alert('✓ Cores de destaque salvas com sucesso!');
-                        return;
-                    }
+                };
+
+                // Individual button handlers
+                document.getElementById('btn-cor-fundo-leitura')?.addEventListener('click', () => {
+                    openColorPicker('bgColor', 'color-picker-leitura-grid');
                 });
 
-                document.getElementById('btn-personalizar-contraste')?.addEventListener('click', (e) => {
-                    const painel = document.getElementById('painel-contraste');
-                    if(painel) painel.style.display = painel.style.display === 'none' ? 'block' : 'none';
+                document.getElementById('btn-cor-letra-leitura')?.addEventListener('click', () => {
+                    openColorPicker('textColor', 'color-picker-leitura-grid');
+                });
+
+                document.getElementById('btn-cor-fundo-destaque')?.addEventListener('click', () => {
+                    openColorPicker('destaqueBgColor', 'color-picker-destaque-grid');
+                });
+
+                document.getElementById('btn-cor-texto-destaque')?.addEventListener('click', () => {
+                    openColorPicker('destaqueTextColor', 'color-picker-destaque-grid');
+                });
+
+                // Close/Save buttons
+                document.getElementById('btn-color-cancel-leitura')?.addEventListener('click', () => {
+                    if (leituraOverlay) leituraOverlay.classList.add('hidden');
+                    selectedColorType = null;
+                });
+
+                document.getElementById('btn-color-save-leitura')?.addEventListener('click', () => {
+                    if (leituraOverlay) leituraOverlay.classList.add('hidden');
+                    selectedColorType = null;
+                    alert('✓ Cores do ciclo ' + activeCycleId + ' salvas com sucesso!');
+                });
+
+                document.getElementById('btn-color-cancel-destaque')?.addEventListener('click', () => {
+                    if (destaqueOverlay) destaqueOverlay.classList.add('hidden');
+                    selectedColorType = null;
+                });
+
+                document.getElementById('btn-color-save-destaque')?.addEventListener('click', () => {
+                    if (destaqueOverlay) destaqueOverlay.classList.add('hidden');
+                    selectedColorType = null;
+                    alert('✓ Cores do ciclo ' + activeCycleId + ' salvas com sucesso!');
+                });
+
+                // Personalizar Contraste button - open cycle selector or color picker
+                document.getElementById('btn-personalizar-contraste')?.addEventListener('click', () => {
+                    // For now, just ensure cycle 1 is selected and show tutorial
+                    if (activeCycleId !== 1) {
+                        activeCycleId = 1;
+                        updateCycleButtons();
+                        updateTriggerSwatches();
+                    }
+                    alert('💡 Dica: Clique em qualquer ciclo (1-5) acima para selecioná-lo, depois clique nos botões de cor para alterar suas cores. Ciclo 1 é o padrão.');
+                });
+
+                // Initialize cycle display
+                updateCycleButtons();
+                updateTriggerSwatches();
+
+                // Toggle destaque options
+                document.getElementById('tgl-destaque')?.addEventListener('change', (e) => {
+                    const destaqueSubOptions = document.getElementById('destaque-sub-options');
+                    const isChecked = e.target.checked;
+                    
+                    if (isChecked) {
+                        destaqueSubOptions?.classList.remove('disabled-section');
+                    } else {
+                        destaqueSubOptions?.classList.add('disabled-section');
+                    }
+                    
+                    // Update active cycle memory
+                    cycleMemory[activeCycleId].destaqueEnable = isChecked;
                 });
 
                 document.querySelectorAll('input[name="tipo-leitura"]').forEach(radio => {
